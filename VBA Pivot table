@@ -1,0 +1,23 @@
+Sub ptable()
+
+Dim pc As PivotCache
+Dim pt As PivotTable
+Dim rng As Range
+Set rng = ActiveWorkbook.Sheets("Data").Range("A1").CurrentRegion
+
+Set pc = ActiveWorkbook.PivotCaches.Create(xlDatabase, rng)
+Sheets.Add , Sheets(Sheets.Count)
+ActiveSheet.Name = "Summary"
+
+Set pt = ActiveSheet.PivotTables.Add(pc, Range("A3"), "MyPivot")
+
+With pt
+       .PivotFields("Associate").Orientation = xlRowField
+        .PivotFields("Region").Orientation = xlColumnField
+                   With .PivotFields("Is Live")
+                            .Orientation = xlDataField
+                             .Function = xlCount
+                    End With
+End With
+
+
